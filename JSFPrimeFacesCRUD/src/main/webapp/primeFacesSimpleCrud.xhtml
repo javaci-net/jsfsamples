@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+	<h:form>
+		<h2>Prime Faces Simple CRUD</h2>
+
+		<h:panelGroup rendered="#{!propertyBean.edit}">
+			<h3>Add Data</h3>
+			<p:panelGrid columns="2" layout="grid" style="width: 50%;">
+				<h:outputText value="Key:" />
+				<p:inputText value="#{propertyBean.item.key}" />
+
+				<h:outputText value="Value: " />
+				<p:inputText value="#{propertyBean.item.value}" />
+
+				<p:commandButton value="add" update="@form"
+					action="#{propertyBean.add}" />
+				<f:verbatim />
+			</p:panelGrid>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{propertyBean.edit}">
+			<h3>Edit item #{propertyBean.item.key}</h3>
+			<p>
+				Key:
+				<p:inputText value="#{propertyBean.item.key}" />
+			</p>
+			<p>
+				Value:
+				<p:inputText value="#{propertyBean.item.value}" />
+			</p>
+			<p>
+				<p:commandButton value="save" update="@form"
+					action="#{propertyBean.update}" />
+			</p>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{empty propertyBean.cacheList}">
+			<p>No data inserted yet.</p>
+		</h:panelGroup>
+		<p:dataTable value="#{propertyBean.cacheList}" var="item"
+			rendered="#{not empty propertyBean.cacheList}" style="width: 50%;">
+
+			<p:column>
+				<f:facet name="header">Key</f:facet>
+				<h:outputText value="#{item.key}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">Value</f:facet>
+				<h:outputText value="#{item.value}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">Edit</f:facet>
+				<p:commandButton value="edit" update="@form"
+					action="#{propertyBean.setItemToEdit(item)}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">Delete</f:facet>
+				<p:commandButton value="delete" update="@form"
+					action="#{propertyBean.delete(item)}" />
+			</p:column>
+		</p:dataTable>
+	</h:form>
+
+</h:body>
+</html>
+
+
+

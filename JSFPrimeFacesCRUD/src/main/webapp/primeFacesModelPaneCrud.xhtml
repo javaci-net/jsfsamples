@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+	<h:form>
+		<h2>Prime Faces Simple CRUD</h2>
+
+		<h:panelGroup rendered="#{!propertyBean.edit}">
+			<h3>Add Data</h3>
+			<p:panelGrid columns="2" layout="grid" style="width: 50%;">
+				<h:outputText value="Key:" />
+				<p:inputText value="#{propertyBean.item.key}" />
+
+				<h:outputText value="Value: " />
+				<p:inputText value="#{propertyBean.item.value}" />
+
+				<p:commandButton value="add" update="@form"
+					action="#{propertyBean.add}" />
+				<f:verbatim />
+			</p:panelGrid>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{propertyBean.edit}">
+			<h3>Edit item #{propertyBean.item.key}</h3>
+			<p>
+				Key:
+				<p:inputText value="#{propertyBean.item.key}" />
+			</p>
+			<p>
+				Value:
+				<p:inputText value="#{propertyBean.item.value}" />
+			</p>
+			<p>
+				<p:commandButton value="save" update="@form"
+					action="#{propertyBean.update}" />
+			</p>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{empty propertyBean.cacheList}">
+			<p>No data inserted yet.</p>
+		</h:panelGroup>
+		<p:dataTable value="#{propertyBean.cacheList}" var="item"
+			rendered="#{not empty propertyBean.cacheList}" style="width: 50%;">
+
+			<p:column>
+				<f:facet name="header">Key</f:facet>
+				<h:outputText value="#{item.key}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">Value</f:facet>
+				<h:outputText value="#{item.value}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">Edit</f:facet>
+				<p:commandButton value="edit" update="@form"
+					action="#{propertyBean.setItemToEdit(item)}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">Delete</f:facet>
+				<p:commandButton value="delete" update="@form"
+					action="#{propertyBean.delete(item)}" />
+			</p:column>
+		</p:dataTable>
+
+		<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+
+		<p:dataTable id="basicDT" var="item" value="#{propertyBean.cacheList}">
+			<f:facet name="header">
+            Basic
+        </f:facet>
+			<p:column>
+				<f:facet name="header">Key</f:facet>
+				<h:outputText value="#{item.key}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">Value</f:facet>
+				<h:outputText value="#{item.value}" />
+			</p:column>
+			<p:column style="width:32px;text-align: center">
+				<p:commandButton update="@form" oncomplete="PF('carDialog').show()"
+					icon="pi pi-search" title="View">
+					<f:setPropertyActionListener value="#{car}"
+						target="#{dtSelectionView.selectedCar}" />
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+
+		<p:dialog header="Property Edit" widgetVar="propertyDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="propertyDetail" style="text-align:center;">
+				<p:panelGrid columns="2"
+					rendered="#{not empty dtSelectionView.selectedCar}"
+					columnClasses="label,value">
+					<f:facet name="header">
+						<p:graphicImage
+							name="demo/images/car/#{dtSelectionView.selectedCar.brand}-big.gif" />
+					</f:facet>
+
+					<h:outputText value="Id:" />
+					<h:outputText value="#{dtSelectionView.selectedCar.id}" />
+
+					<h:outputText value="Year" />
+					<h:outputText value="#{dtSelectionView.selectedCar.year}" />
+
+					<h:outputText value="Color:" />
+					<h:outputText value="#{dtSelectionView.selectedCar.color}"
+						style="color:#{dtSelectionView.selectedCar.color}" />
+
+					<h:outputText value="Price" />
+					<h:outputText value="$#{dtSelectionView.selectedCar.price}" />
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+	</h:form>
+
+
+</h:body>
+</html>
+
+
+
