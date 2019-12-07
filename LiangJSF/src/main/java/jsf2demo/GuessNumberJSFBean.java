@@ -6,6 +6,8 @@ import javax.inject.Named;
 @Named(value = "guessNumber")
 @ViewScoped
 public class GuessNumberJSFBean implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
+	
   private int number;
   private String guessString;
   

@@ -10,6 +10,7 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class NavigationController implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
 	@ManagedProperty(value = "#{param.pageId}")
 	private String pageId;
 

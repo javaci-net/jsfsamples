@@ -8,6 +8,8 @@ import java.io.*;
 @Named(value = "addressRegistration")
 @SessionScoped
 public class AddressRegistrationJSFBean implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
   private String lastName;
   private String firstName;
   private String mi;

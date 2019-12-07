@@ -9,7 +9,9 @@ import javax.inject.Named;
 @RequestScoped
 public class UserBean implements Serializable {
 
-    private String firstName;
+	private static final long serialVersionUID = 1L;
+
+	private String firstName;
     private String lastName;
     private int age;
 
