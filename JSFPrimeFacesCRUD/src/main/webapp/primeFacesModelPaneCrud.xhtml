@@ -8,70 +8,23 @@
 <h:head>
 </h:head>
 <h:body>
+<style>
+.ui-datatable .ui-datatable-footer {
+        text-align:left;
+    }
+     
+</style>
 	<h:form>
-		<h2>Prime Faces Simple CRUD</h2>
+		<h2>Prime Faces Model Pane CRUD</h2>
 
-		<h:panelGroup rendered="#{!propertyBean.edit}">
-			<h3>Add Data</h3>
-			<p:panelGrid columns="2" layout="grid" style="width: 50%;">
-				<h:outputText value="Key:" />
-				<p:inputText value="#{propertyBean.item.key}" />
+	
 
-				<h:outputText value="Value: " />
-				<p:inputText value="#{propertyBean.item.value}" />
-
-				<p:commandButton value="add" update="@form"
-					action="#{propertyBean.add}" />
-				<f:verbatim />
-			</p:panelGrid>
-		</h:panelGroup>
-		<h:panelGroup rendered="#{propertyBean.edit}">
-			<h3>Edit item #{propertyBean.item.key}</h3>
-			<p>
-				Key:
-				<p:inputText value="#{propertyBean.item.key}" />
-			</p>
-			<p>
-				Value:
-				<p:inputText value="#{propertyBean.item.value}" />
-			</p>
-			<p>
-				<p:commandButton value="save" update="@form"
-					action="#{propertyBean.update}" />
-			</p>
-		</h:panelGroup>
-		<h:panelGroup rendered="#{empty propertyBean.cacheList}">
-			<p>No data inserted yet.</p>
-		</h:panelGroup>
-		<p:dataTable value="#{propertyBean.cacheList}" var="item"
-			rendered="#{not empty propertyBean.cacheList}" style="width: 50%;">
-
-			<p:column>
-				<f:facet name="header">Key</f:facet>
-				<h:outputText value="#{item.key}" />
-			</p:column>
-			<p:column>
-				<f:facet name="header">Value</f:facet>
-				<h:outputText value="#{item.value}" />
-			</p:column>
-			<p:column>
-				<f:facet name="header">Edit</f:facet>
-				<p:commandButton value="edit" update="@form"
-					action="#{propertyBean.setItemToEdit(item)}" />
-			</p:column>
-			<p:column>
-				<f:facet name="header">Delete</f:facet>
-				<p:commandButton value="delete" update="@form"
-					action="#{propertyBean.delete(item)}" />
-			</p:column>
-		</p:dataTable>
 
 		<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
 
-		<p:dataTable id="basicDT" var="item" value="#{propertyBean.cacheList}">
-			<f:facet name="header">
-            Basic
-        </f:facet>
+		<p:dataTable 
+			var="item" value="#{propertyBean.cacheList}" style="width: 50%;">
+
 			<p:column>
 				<f:facet name="header">Key</f:facet>
 				<h:outputText value="#{item.key}" />
@@ -80,39 +33,62 @@
 				<f:facet name="header">Value</f:facet>
 				<h:outputText value="#{item.value}" />
 			</p:column>
-			<p:column style="width:32px;text-align: center">
-				<p:commandButton update="@form" oncomplete="PF('carDialog').show()"
-					icon="pi pi-search" title="View">
-					<f:setPropertyActionListener value="#{car}"
-						target="#{dtSelectionView.selectedCar}" />
+			<p:column style="text-align: center">
+				<p:commandButton update="@form"
+					oncomplete="PF('propertyDialog').show()" value="edit"
+					title="update">
+					<f:setPropertyActionListener value="#{item}"
+						target="#{propertyBean.item}" />
+					<f:setPropertyActionListener value="true"
+						target="#{propertyBean.edit}" />
 				</p:commandButton>
 			</p:column>
+			
+			<f:facet name="footer">
+	            	<p:commandButton update="@form"
+						oncomplete="PF('propertyDialog').show()" value="add" title="add"
+							action="#{propertyBean.newItem}">
+						<f:setPropertyActionListener value="false"
+							target="#{propertyBean.edit}" />
+					</p:commandButton>
+	        </f:facet>
+	        
 		</p:dataTable>
 
-		<p:dialog header="Property Edit" widgetVar="propertyDialog" modal="true"
-			showEffect="fade" hideEffect="fade" resizable="false">
+		<p:dialog header="Property" widgetVar="propertyDialog"
+			modal="true" showEffect="fade" hideEffect="fade" >
 			<p:outputPanel id="propertyDetail" style="text-align:center;">
-				<p:panelGrid columns="2"
-					rendered="#{not empty dtSelectionView.selectedCar}"
-					columnClasses="label,value">
-					<f:facet name="header">
-						<p:graphicImage
-							name="demo/images/car/#{dtSelectionView.selectedCar.brand}-big.gif" />
-					</f:facet>
+				<h:panelGroup rendered="#{!propertyBean.edit}">
+					<h3>Add item </h3>
+					<p>
+						Key:
+						<p:inputText value="#{propertyBean.item.key}" />
+					</p>
+					<p>
+						Value:
+						<p:inputText value="#{propertyBean.item.value}" />
+					</p>
+					<p>
+						<p:commandButton value="save" update="@form"
+							action="#{propertyBean.add}" />
+					</p>
+				</h:panelGroup>
 
-					<h:outputText value="Id:" />
-					<h:outputText value="#{dtSelectionView.selectedCar.id}" />
-
-					<h:outputText value="Year" />
-					<h:outputText value="#{dtSelectionView.selectedCar.year}" />
-
-					<h:outputText value="Color:" />
-					<h:outputText value="#{dtSelectionView.selectedCar.color}"
-						style="color:#{dtSelectionView.selectedCar.color}" />
-
-					<h:outputText value="Price" />
-					<h:outputText value="$#{dtSelectionView.selectedCar.price}" />
-				</p:panelGrid>
+				<h:panelGroup rendered="#{propertyBean.edit}">
+					<h3>Edit item #{propertyBean.item.key}</h3>
+					<p>
+						Key:
+						<p:inputText value="#{propertyBean.item.key}" />
+					</p>
+					<p>
+						Value:
+						<p:inputText value="#{propertyBean.item.value}" />
+					</p>
+					<p>
+						<p:commandButton value="save" update="@form"
+							action="#{propertyBean.update}" />
+					</p>
+				</h:panelGroup>
 			</p:outputPanel>
 		</p:dialog>
 	</h:form>
