@@ -34,14 +34,15 @@ public class PropertyBean implements Serializable {
 		System.out.println("Called newItem");
 		item = new Property();
 	}
+	
 	public void add() {
 		System.out.println("Called add with " + item);
 		cacheList.add(item);
-		item = new Property();
 		
 		FacesContext context = FacesContext.getCurrentInstance();
-        
         context.addMessage(null, new FacesMessage("Added Successfully",  "Key: " + item.getKey()) );
+        
+        item = new Property();
 	}
 
 	public void setItemToEdit(Property item) {
@@ -52,6 +53,10 @@ public class PropertyBean implements Serializable {
 
 	public void update() {
 		System.out.println("Called edit with " + item);
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("Updated Successfully",  "Key: " + item.getKey()) );
+        
 		item = new Property();
 		edit = false;
 	}
@@ -59,6 +64,10 @@ public class PropertyBean implements Serializable {
 	public void delete(Property item) {
 		System.out.println("Called delete with " + item);
 		cacheList.remove(item);
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("Updated Successfully",  "Key: " + item.getKey()) );
+        
 		this.item = new Property();
 		edit = false;
 	}

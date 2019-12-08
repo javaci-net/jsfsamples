@@ -8,22 +8,18 @@
 <h:head>
 </h:head>
 <h:body>
-<style>
+	<style>
 .ui-datatable .ui-datatable-footer {
-        text-align:left;
-    }
-     
+	text-align: left;
+}
 </style>
 	<h:form>
 		<h2>Prime Faces Model Pane CRUD</h2>
 
-	
-
-
 		<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
 
-		<p:dataTable 
-			var="item" value="#{propertyBean.cacheList}" style="width: 50%;">
+		<p:dataTable var="item" value="#{propertyBean.cacheList}"
+			style="width: 50%;">
 
 			<p:column>
 				<f:facet name="header">Key</f:facet>
@@ -43,23 +39,38 @@
 						target="#{propertyBean.edit}" />
 				</p:commandButton>
 			</p:column>
-			
+			<p:column style="text-align: center">
+				<p:commandButton value="Delete"
+					action="#{propertyBean.delete(item)}" update="@form">
+					<p:confirm header="Confirmation" message="Are you sure?"
+						icon="pi pi-exclamation-triangle" />
+				</p:commandButton>
+			</p:column>
+
 			<f:facet name="footer">
-	            	<p:commandButton update="@form"
-						oncomplete="PF('propertyDialog').show()" value="add" title="add"
-							action="#{propertyBean.newItem}">
-						<f:setPropertyActionListener value="false"
-							target="#{propertyBean.edit}" />
-					</p:commandButton>
-	        </f:facet>
-	        
+				<p:commandButton update="@form"
+					oncomplete="PF('propertyDialog').show()" value="add" title="add"
+					action="#{propertyBean.newItem}">
+					<f:setPropertyActionListener value="false"
+						target="#{propertyBean.edit}" />
+				</p:commandButton>
+			</f:facet>
+
 		</p:dataTable>
 
-		<p:dialog header="Property" widgetVar="propertyDialog"
-			modal="true" showEffect="fade" hideEffect="fade" >
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Yes" type="button"
+				styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+			<p:commandButton value="No" type="button"
+				styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+		</p:confirmDialog>
+
+		<p:dialog header="Property" widgetVar="propertyDialog" modal="true"
+			showEffect="fade" hideEffect="fade">
 			<p:outputPanel id="propertyDetail" style="text-align:center;">
 				<h:panelGroup rendered="#{!propertyBean.edit}">
-					<h3>Add item </h3>
+					<h3>Add item</h3>
 					<p>
 						Key:
 						<p:inputText value="#{propertyBean.item.key}" />
