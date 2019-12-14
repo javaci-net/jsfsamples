@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/boorstrap-template.xhtml">
+
+
+	<ui:define name="content">
+
+		<style>
+.ui-datatable .ui-datatable-footer {
+	text-align: left;
+}
+</style>
+		<script type="text/javascript">
+			function handleRequest(xhr, status, args) {
+				if (args.validationFailed) {
+					PF('propertyDialog').jq.effect("shake", {
+						times : 5
+					}, 100);
+				} else {
+					PF('propertyDialog').hide();
+				}
+			}
+		</script>
+		<p:growl id="growl" showDetail="true" skipDetailIfEqualsSummary="true" />
+
+		<h:form id="form">
+			<h2>Prime Faces Model Pane CRUD</h2>
+
+
+
+			<p:dataTable id="list" var="item" value="#{propertyBean.cacheList}"
+				style="width: 50%;">
+
+				<p:column>
+					<f:facet name="header">Key</f:facet>
+					<h:outputText value="#{item.key}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Value</f:facet>
+					<h:outputText value="#{item.value}" />
+				</p:column>
+				<p:column style="text-align: center">
+					<p:commandButton oncomplete="PF('propertyDialog').show()"
+						value="edit" title="update" process=":form:list" update=":form:dialog">
+						<f:setPropertyActionListener value="#{item}"
+							target="#{propertyBean.item}" />
+						<f:setPropertyActionListener value="true"
+							target="#{propertyBean.edit}" />
+					</p:commandButton>
+				</p:column>
+				<p:column style="text-align: center">
+					<p:commandButton value="Delete" process=":form:list"
+						action="#{propertyBean.delete(item)}" update="@form">
+						<p:confirm header="Confirmation" message="Are you sure?"
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+
+				<f:facet name="footer">
+					<p:commandButton oncomplete="PF('propertyDialog').show()"
+						value="add" title="add" action="#{propertyBean.newItem}"
+						update=":form:dialog" process=":form:list">
+						<f:setPropertyActionListener value="false"
+							target="#{propertyBean.edit}" />
+					</p:commandButton>
+				</f:facet>
+
+			</p:dataTable>
+
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			</p:confirmDialog>
+
+			<p:dialog id="dialog" header="#{propertyBean.edit ? 'Edit item' : 'Add item'}" widgetVar="propertyDialog"
+				modal="true" showEffect="fade" hideEffect="fade">
+
+				<h:panelGroup rendered="#{!propertyBean.edit}">
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel for="key1" value="Key:" />
+						<p:inputText id="key1" value="#{propertyBean.item.key}"
+							required="true" label="key" />
+
+						<h:outputLabel for="value1" value="Value:" />
+						<p:inputText id="value1" value="#{propertyBean.item.value}"
+							required="true" label="value" />
+
+						<f:facet name="footer">
+							<p:commandButton value="Save" update=":growl :form:list"
+								action="#{propertyBean.add}"
+								oncomplete="handleRequest(xhr, status, args)" />
+						</f:facet>
+					</h:panelGrid>
+				</h:panelGroup>
+
+				<h:panelGroup rendered="#{propertyBean.edit}">
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel for="key2" value="Key:" />
+						<p:inputText id="key2" value="#{propertyBean.item.key}"
+							required="true" label="key" />
+
+						<h:outputLabel for="value2" value="Value:" />
+						<p:inputText id="value2" value="#{propertyBean.item.value}"
+							required="true" label="value" />
+
+						<f:facet name="footer">
+							<p:commandButton value="Update" update=":growl :form:list"
+								action="#{propertyBean.update}"
+								oncomplete="handleRequest(xhr, status, args)" />
+						</f:facet>
+					</h:panelGrid>
+				</h:panelGroup>
+
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+
+

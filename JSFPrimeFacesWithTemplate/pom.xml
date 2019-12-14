@@ -12,9 +12,21 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 
 		<jsf.version>2.2.2</jsf.version>
+		<primeFacesVersion>7.0</primeFacesVersion>
+
+		<slf4jVersion>1.6.1</slf4jVersion>
+
+
 
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -31,8 +43,28 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>7.0</version>
+			<version>${primeFacesVersion}</version>
 		</dependency>
+
+		<!-- Themes -->
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>all-themes</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4jVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4jVersion}</version>
+		</dependency>
+
 	</dependencies>
 
 </project>
